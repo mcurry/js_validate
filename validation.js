@@ -2,33 +2,30 @@
  * Javascript Validation CakePHP Helper
  * Copyright (c) 2008 Matt Curry
  * www.PseudoCoder.com
+ * http://github.com/mcurry/cakephp/tree/master/helpers/validation
+ * http://sandbox2.pseudocoder.com/demo/validation
  *
  * @author      mattc <matt@pseudocoder.com>
- * @version     0.2
  * @license     MIT
  *
  */
  
 function validateForm(form, rules, options) {
-  console.log(options);
-  
   var errors = false;
   
-  //clear out any old errors
-  if (options['messageId']) {
-    $("#" + options['messageId']).html("");
-    $("#" + options['messageId']).slideUp();
+  if (options['messageId'] && $.trim($("#" + options['messageId']).html()) != "" ) {
+    $("#" + options['messageId']).slideUp().html("");
   }
+
   $(".error-message").hide();
   $("input").removeClass("form-error");
-  
+  $("div").removeClass("error");
+
   //loop through the validation rules and check for errors
   $.each(rules, function(field) {
     var val = $.trim($("#" + field).val());
     
     $.each(this, function() {
-      console.log(this['rule']);
-      
       //check if the input exists
       if ($("#" + field).attr("id") != undefined) {
         var valid = true;
@@ -55,14 +52,13 @@ function validateForm(form, rules, options) {
           errors = true;
           
           //add the error message
-          console.log(eval(options));
           if(options['messageId']) {
-            console.log("here");
             $("#" + options['messageId']).append("<p>" + this['message'] + "</p>");
           }
           
           //add the form-error class to the input
           $("#" + field).addClass("form-error");
+          $("#" + field).parents("div:first").addClass("error");
           $("#" + field).after('<div class="error-message">'  + this['message'] +  '</div>');
         }
       }
@@ -70,7 +66,7 @@ function validateForm(form, rules, options) {
   });
   
   if(options['messageId']) {
-    if($("#" + options['messageId']).html() != "") {
+    if($.trim($("#" + options['messageId']).html()) != "") {
       $("#" + options['messageId']).wrapInner("<div class='error'></div>");
       $("#" + options['messageId']).slideDown();
     }

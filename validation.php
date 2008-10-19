@@ -3,9 +3,10 @@
  * Javascript Validation CakePHP Helper
  * Copyright (c) 2008 Matt Curry
  * www.PseudoCoder.com
+ * http://github.com/mcurry/cakephp/tree/master/helpers/validation
+ * http://sandbox2.pseudocoder.com/demo/validation
  *
  * @author      mattc <matt@pseudocoder.com>
- * @version     0.2
  * @license     MIT
  *
  */
@@ -39,8 +40,7 @@ class ValidationHelper extends Helper {
       $options = array();
     }
 
-    $defaultOptions = array('formId' => false, 'inline' => true, 'messageId' => 'message');
-
+    $defaultOptions = array('formId' => false, 'inline' => true, 'messageId' => 'messages');
     $options = array_merge($defaultOptions, $options);
 
     //load the whitelist
@@ -59,18 +59,18 @@ class ValidationHelper extends Helper {
                         $('". $formId . "').submit( function() {
                           return validateForm(this, rules, eval(" . json_encode(array('messageId' => $options['messageId'])) . "));
                         });
-                      });";
+                      });\n";
 
     //filter the rules to those that can be handled with JavaScript
     $validation = array();
     foreach($modelNames as $modelName) {
-      $model = new $modelName();
+      $model = classRegistry::init($modelName);
 
       foreach ($model->validate as $field => $validators) {
-        if (array_intersect(array('rule', 'required', 'allowEmpty', 'on', 'message'), array_keys($validators))) {
+        if (array_intersect(array('rule', 'allowEmpty', 'on', 'message'), array_keys($validators))) {
           $validators = array($validators);
         }
-
+        
         foreach($validators as $key => $validator) {
           $rule = null;
 
@@ -194,6 +194,9 @@ class ValidationHelper extends Helper {
 
     //special handling
     switch ($rule) {
+      case 'alphaNumeric':
+        //Not sure what the "u" modifier is, but JavaScript can't handle it.
+        return str_replace('/mu', '/m', $regex);
       case 'postal':
       case 'ssn':
         //I'm not a regex guru and I have no idea what "\\A\\b" and "\\b\\z" do.
