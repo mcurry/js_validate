@@ -60,6 +60,10 @@ function validateForm(form, rules, options) {
           $("#" + field).addClass("form-error");
           $("#" + field).parents("div:first").addClass("error");
           $("#" + field).after('<div class="error-message">'  + this['message'] +  '</div>');
+          
+          if (this['last'] === true) {
+            return false;
+          }  
         }
       }
     });

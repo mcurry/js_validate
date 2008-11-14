@@ -67,7 +67,7 @@ class ValidationHelper extends Helper {
       $model = classRegistry::init($modelName);
 
       foreach ($model->validate as $field => $validators) {
-        if (array_intersect(array('rule', 'allowEmpty', 'on', 'message'), array_keys($validators))) {
+        if (array_intersect(array('rule', 'allowEmpty', 'on', 'message', 'last'), array_keys($validators))) {
           $validators = array($validators);
         }
         
@@ -100,6 +100,9 @@ class ValidationHelper extends Helper {
                           'message' => __($validator['message'], true)
                          );
 
+						if (isset($validator['last']) && $validator['last'] === true) {
+						    $temp['last'] = true;
+						} 
 
             if (isset($validator['allowEmpty']) && $validator['allowEmpty'] === true) {
               $temp['allowEmpty'] = true;
