@@ -79,7 +79,7 @@
     }
     
     return true;
-  }
+  };
 
   $.fn.validate.range = function(val, params) {
     if (val < parseInt(params[0])) {
@@ -90,7 +90,7 @@
     }
     
     return true;
-  }
+  };
   
   $.fn.validate.comparison = function(val, params) {
     if(val == "") {
@@ -107,7 +107,7 @@
     }
     
     return false;
-  }
+  };
   
   $.fn.validate.multiple = function(val, params) {
     if(typeof val != "object" || val == null) {
@@ -130,7 +130,7 @@
     }
     
     return true;
-  }
+  };
   
   $.fn.validate.setError = function(field, message) {
     //add the form-error class to the input

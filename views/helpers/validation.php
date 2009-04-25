@@ -97,8 +97,8 @@ class ValidationHelper extends Helper {
               $temp['allowEmpty'] = true;
             }
 
-            if (in_array($validator['rule'], array('alphaNumeric', 'blank'))) {
-              //Cake Validation::_check returning true is actually false for alphaNumeric and blank
+            if (in_array($validator['rule'], array('blank'))) {
+              //Cake Validation::_check returning true is actually false for blank
               //add a "!" so that JavaScript knows
               $temp['negate'] = true;
             }
@@ -143,6 +143,8 @@ class ValidationHelper extends Helper {
     //Certain Cake built-in validations can be handled with regular expressions,
     //but aren't on the Cake side.
     switch ($rule) {
+      case 'alphaNumeric':
+        return '/^[0-9A-Za-z]+$/';
       case 'between':
         return sprintf('/^.{%d,%d}$/', $params[0], $params[1]);
       case 'date':
@@ -194,9 +196,6 @@ class ValidationHelper extends Helper {
 
     //special handling
     switch ($rule) {
-      case 'alphaNumeric':
-        //Not sure what the "u" modifier is, but JavaScript can't handle it.
-        return str_replace('/mu', '/m', $regex);
       case 'postal':
       case 'ssn':
         //I'm not a regex guru and I have no idea what "\\A\\b" and "\\b\\z" do.
