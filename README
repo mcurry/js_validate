@@ -25,7 +25,7 @@
       If you are already using jQuery throughout your app, and it is included in your layout, you can removed it from the line below.
       If you copied jquery.validation.min.js to your /app/webroot/js:
       $javascript->link(array('jquery', 'jquery.validation.min'), false); 
-      Alternatively, you can access use the version in the plugin directory:
+      Alternatively, you can use the JavaScript right from the in the plugin directory:
       $javascript->link(array('jquery', '/cakephp_plugin_validation/js/jquery.validation'), false); 
       The downside to using this method is the javascript is loaded through PHP, which isn't as fast.
 
