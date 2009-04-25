@@ -1,6 +1,6 @@
 /*
- * Javascript Validation CakePHP Helper
- * Copyright (c) 2008 Matt Curry
+ * CakePHP jQuery Validation Plugin
+ * Copyright (c) 2009 Matt Curry
  * www.PseudoCoder.com
  * http://github.com/mcurry/cakephp/tree/master/helpers/validation
  * http://sandbox2.pseudocoder.com/demo/validation
@@ -14,25 +14,33 @@
     * This helper requires jQuery. Sorry to all you Prototype/script.aculo.us users.
 
 /* ReadMe */
-   1. You'll need a working version of CakePHP installed. This is running on 1.2.0.7692 RC3.
-   2. Download jQuery 1.2.3 or later and put it in somewhere in your /app/webroot/js.
-   3. Download the helper.
-   4. There are two files in the zip. Put validation.php into your /app/views/helpers
-   5. Put validation.js somewhere in your /app/webroot/js or if you prefer you can copy the contents into common javascript file.
+   1. You'll need a working version of CakePHP installed. This has been teston on 1.2.2.8120 Stable.
+   2. Download jQuery 1.3.2 or later and put it in somewhere in your /app/webroot/js.
+   3. Download the plugin and put it in /app/plugin/cakephp_plugin_validation
+   5. Optionally, put jquery.validation.min.js somewhere in your /app/webroot/js.
    6. Include the helper in any controller that will need it.
-      var $helpers = array('Validation');
+      var $helpers = array('CakephpPluginValidation.Validation');
 
-   7. Include the Javascript files in your view. If you are already using jQuery throughout your app, and it is included in your layout, you can removed it from the line below.
-      $javascript->link(array('jquery', 'validation'), false); 
+   7. Include the Javascript files in your view. 
+      If you are already using jQuery throughout your app, and it is included in your layout, you can removed it from the line below.
+      If you copied jquery.validation.min.js to your /app/webroot/js:
+      $javascript->link(array('jquery', 'jquery.validation.min'), false); 
+      Alternatively, you can access use the version in the plugin directory:
+      $javascript->link(array('jquery', '/cakephp_plugin_validation/js/jquery.validation'), false); 
+      The downside to using this method is the javascript is loaded through PHP, which isn't as fast.
 
    8. Then in the views for your forms, call the helper. Replace "Model" with the model name for the form.
       echo $validation->rules('Model');
 
    9. You can pass a second param to the method call above, which is an array of options. The available options are:
           * formId - The specific form id if you have multiple forms on a page and only want to target one.
-          * inline - Setting this to true will return the ouput for direct echoing. If false then the codeblock will be added to the output of $scripts_for_layout for display in the HEAD tag.
+          * inline - Setting this to true will return the ouput for direct echoing. 
+                     If false then the codeblock will be added to the output of $scripts_for_layout for display in the HEAD tag.
           * messageId - The id of a div where all the validation messages will be displayed. 
-  10. If a particular field fails the input will be marked with the css class "form-error" and the message will be added after the field with the class "error-message". This is the same as Cake would do if you submitted to the server. In addition you can specify a div messageId and all the messages will be shown there as well.
+  10. If a particular field fails the input will be marked with the css class "form-error" 
+      and the message will be added after the field with the class "error-message". 
+      This is the same as Cake would do if you submitted to the server. 
+      In addition you can specify a div messageId and all the messages will be shown there as well.
         <div id="message"></div>  
 
 Tips

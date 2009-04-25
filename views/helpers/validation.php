@@ -1,7 +1,7 @@
 <?php
 /*
- * Javascript Validation CakePHP Helper
- * Copyright (c) 2008 Matt Curry
+ * CakePHP jQuery Validation Plugin
+ * Copyright (c) 2009 Matt Curry
  * www.PseudoCoder.com
  * http://github.com/mcurry/cakephp/tree/master/helpers/validation
  * http://sandbox2.pseudocoder.com/demo/validation
