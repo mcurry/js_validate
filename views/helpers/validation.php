@@ -33,36 +33,25 @@ class ValidationHelper extends Helper {
   //Configure::write('javascriptValidationWhitelist', array('alphaNumeric', 'minLength'));
   var $whitelist = false;
 
-  function rules($modelNames, $options=array()) {
-    $scriptTags = '';
-
-    if (empty($options) || !is_array($options)) {
-      $options = array();
-    }
-
-    $defaultOptions = array('formId' => false, 'inline' => true, 'messageId' => 'messages');
-    $options = array_merge($defaultOptions, $options);
+  function bind($modelNames, $options=array()) {
+    $defaultOptions = array('form' => 'form', 'inline' => true, 'messageId' => null);
+    $options = am($defaultOptions, $options);
+    $pluginOptions = array_intersect_key($options, array('messageId' => true));
 
     //load the whitelist
     $this->whitelist = Configure::read('javascriptValidationWhitelist');
 
+    //catch the form submit
+    if ($options['form']) {
+      $js[] = sprintf('$(function() { $("%s").validate() });', $options['form']);
+    }
+
+    $validation = array();
     if (!is_array($modelNames)) {
       $modelNames = array($modelNames);
     }
-
-    //catch the form submit
-    $formId = 'form';
-    if ($options['formId']) {
-      $formId = '#' . $formName;
-    }
-    $scriptTags  	.= "$(document).ready(function(){
-                        $('". $formId . "').submit( function() {
-                          return validateForm(this, rules, eval(" . json_encode(array('messageId' => $options['messageId'])) . "));
-                        });
-                      });\n";
-
+    
     //filter the rules to those that can be handled with JavaScript
-    $validation = array();
     foreach($modelNames as $modelName) {
       $model = classRegistry::init($modelName);
 
@@ -92,7 +81,7 @@ class ValidationHelper extends Helper {
 
 
           if (!empty($validator['rule'])) {
-            $rule = $this->convertRule($validator['rule']);
+            $rule = $this->__convertRule($validator['rule']);
           }
 
           if ($rule) {
@@ -120,18 +109,21 @@ class ValidationHelper extends Helper {
       }
     }
 
-    $scriptTags 	.= "var rules = eval(" . json_encode($validation) . ");\n";
+    $js = sprintf('$(function() { $("%s").validate(%s, %s) });',
+                  $options['form'],
+                  $this->Javascript->object($validation),
+                  $this->Javascript->object($pluginOptions));
 
     if ($options['inline']) {
-      return sprintf($this->Javascript->tags['javascriptblock'], $scriptTags);
+      return sprintf($this->Javascript->tags['javascriptblock'], $js);
     } else {
-      $this->Javascript->codeBlock($scriptTags, array('inline' => false));
+      $this->Javascript->codeBlock($js, array('inline' => false));
     }
 
-    return true;
+    return;
   }
 
-  function convertRule($rule) {
+  function __convertRule($rule) {
     $regex = false;
 
     if ($rule == '_extract') {
@@ -178,9 +170,14 @@ class ValidationHelper extends Helper {
         //decimal notation.  Feel free to alter or delete.
         return '/^[+-]?[0-9]+$/';
       case 'range':
+      case 'comparison':
         //Don't think there is a way to do this with a regular expressions,
         //so we'll handle this with plain old javascript
-        return sprintf('range|%s|%s', $params[0], $params[1]);
+        return array('rule' => $rule, 'params' => array($params[0], $params[1]));
+      case 'multiple':
+        $defaults = array('in' => null, 'max' => null, 'min' => null);
+        $params = array_merge($defaults, $params[0]);
+        return array('rule' => 'multiple', 'params' => $params);
     }
 
     //try to lookup the regular expression from
