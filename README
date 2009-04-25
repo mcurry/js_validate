@@ -2,7 +2,7 @@
  * CakePHP jQuery Validation Plugin
  * Copyright (c) 2009 Matt Curry
  * www.PseudoCoder.com
- * http://github.com/mcurry/cakephp/tree/master/helpers/validation
+ * http://github.com/mcurry/cakephp_plugin_validation
  * http://sandbox2.pseudocoder.com/demo/validation
  *
  * @author      mattc <matt@pseudocoder.com>
