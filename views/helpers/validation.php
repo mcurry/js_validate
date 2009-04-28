@@ -79,7 +79,6 @@ class ValidationHelper extends Helper {
                                            );
           }
 
-
           if (!empty($validator['rule'])) {
             $rule = $this->__convertRule($validator['rule']);
           }
@@ -194,17 +193,20 @@ class ValidationHelper extends Helper {
       }
     }
 
-    //special handling
-    switch ($rule) {
-      case 'postal':
-      case 'ssn':
-        //I'm not a regex guru and I have no idea what "\\A\\b" and "\\b\\z" do.
-        //Is it just to match start and end of line?  Why not use
-        //"^" and "$" then?  Eitherway they don't work in JavaScript.
-        return str_replace(array('\\A\\b', '\\b\\z'), array('^', '$'), $regex);
+    if($regex) {
+      //special handling
+      switch ($rule) {
+        case 'postal':
+        case 'ssn':
+          //I'm not a regex guru and I have no idea what "\\A\\b" and "\\b\\z" do.
+          //Is it just to match start and end of line?  Why not use
+          //"^" and "$" then?  Eitherway they don't work in JavaScript.
+          return str_replace(array('\\A\\b', '\\b\\z'), array('^', '$'), $regex);
+      }
+      return $regex;
     }
-
-    return $regex;
+    
+    return array('rule' => $rule, 'params' => $params);
   }
 }
 ?>
