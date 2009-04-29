@@ -32,16 +32,36 @@
    5. Then in the views for your forms, call the helper. Replace "Model" with the model name for the form.
       echo $validation->bind('Model');
 
-   6. You can pass a second param to the method call above, which is an array of options. The available options are:
-          * formId - The specific form id if you have multiple forms on a page and only want to target one.
+/* Extra */
+   1. You can pass a second param to the method call above, which is an array of options. The available options are:
+          * form - Any valid jQuery selector.  Defaults to "form".
+                   If you wanted to target a form you'd most likely pass "#formId"
           * inline - Setting this to true will return the ouput for direct echoing. 
                      If false then the codeblock will be added to the output of $scripts_for_layout for display in the HEAD tag.
           * messageId - The id of a div where all the validation messages will be displayed. 
-   7. If a particular field fails the input will be marked with the css class "form-error" 
+   2. If a particular field fails the input will be marked with the css class "form-error" 
       and the message will be added after the field with the class "error-message". 
       This is the same as Cake would do if you submitted to the server. 
       In addition you can specify a div messageId and all the messages will be shown there as well.
-        <div id="message"></div>  
+        <div id="message"></div>
+        
+/* Custom Rules and Error Handling */
+   1. At the moment there are three callbacks: beforeFilter, setError and afterFilter.
+      beforeFilter - called before validation is started. No params.
+      afterFilter - called after validation is done. Passed an array of errors.
+      setError - called anytime a validation error is found. Passed the field and the error message.
+      
+      If you wanted some alternate handling for errors you could do something like this:
+      $.fn.validate.setError = function(field, message) {
+        //don't ever do this or I will come for you
+        alert(message);
+      }
+
+   2. It's up to you to write the custom function and you're free to use Ajax here.
+      For example if you had a custom validation rule “myRule” you would define the function like this:
+      $.fn.validate.myRule= function(val, params) {
+        //do some validation here and return either true or false.
+      }
 
 Tips
     * I wrote an article for PHPArch about JavaScript validation(http://c7y.phparch.com/c/entry/1/art,improved_javascript_validation), which raised some concerns that this approach may reveal too much about an application's security. If this is a concern for you, but you still want to use this helper, there is an option to whitelist rules can be applied on the client side. To use to this feature set the list in your bootstrap.php:
