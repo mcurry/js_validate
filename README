@@ -2,7 +2,7 @@
  * CakePHP jQuery Validation Plugin
  * Copyright (c) 2009 Matt Curry
  * www.PseudoCoder.com
- * http://github.com/mcurry/cakephp_plugin_validation
+ * http://github.com/mcurry/js_validate/
  * http://sandbox2.pseudocoder.com/demo/validation
  *
  * @author      mattc <matt@pseudocoder.com>
@@ -15,18 +15,19 @@
     * Tested on CakePHP 1.2.2.8120 Stable and jQuery 1.3.2
 
 /* ReadMe */
-   1. Download the plugin and put it in /app/plugin/cakephp_plugin_validation
-      You can rename "cakephp_plugin_validation" to whatever you want, just make sure to
-      use your name in the next steps.
+   1. Download the plugin and put it in /app/plugin/js_validate
+   
    2. Optionally, put jquery.validation.min.js somewhere in your /app/webroot/js.
+   
    3. Include the helper in any controller that will need it.
-      var $helpers = array('CakephpPluginValidation.Validation');
+      var $helpers = array('JsValidate.Validation');
+      
    4. Include the Javascript files in your view. 
       If you are already using jQuery throughout your app, and it is included in your layout, you can removed it from the line below.
       If you copied jquery.validation.min.js to your /app/webroot/js:
       $javascript->link(array('jquery', 'jquery.validation.min'), false); 
       Alternatively, you can use the JavaScript right from the in the plugin directory:
-      $javascript->link(array('jquery', '/cakephp_plugin_validation/js/jquery.validation'), false); 
+      $javascript->link(array('jquery', '/js_validate/js/jquery.validation'), false); 
       The downside to using this method is the javascript is loaded through PHP, which isn't as fast.
 
    5. Then in the views for your forms, call the helper. Replace "Model" with the model name for the form.
