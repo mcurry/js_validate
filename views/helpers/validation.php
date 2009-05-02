@@ -20,11 +20,6 @@ if (!defined('VALID_IP_JS')) {
   define('VALID_IP_JS', '/^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$/');
 }
 
-//list taken from /cake/libs/validation.php line 497
-if (!defined('DEFAULT_VALIDATION_EXTENSIONS')) {
-  define('DEFAULT_VALIDATION_EXTENSIONS', 'gif,jpeg,png,jpg');
-}
-
 class ValidationHelper extends Helper {
   var $helpers = array('Javascript');
 
@@ -41,16 +36,11 @@ class ValidationHelper extends Helper {
     //load the whitelist
     $this->whitelist = Configure::read('javascriptValidationWhitelist');
 
-    //catch the form submit
-    if ($options['form']) {
-      $js[] = sprintf('$(function() { $("%s").validate() });', $options['form']);
-    }
-
     $validation = array();
     if (!is_array($modelNames)) {
       $modelNames = array($modelNames);
     }
-    
+
     //filter the rules to those that can be handled with JavaScript
     foreach($modelNames as $modelName) {
       $model = classRegistry::init($modelName);
@@ -59,7 +49,7 @@ class ValidationHelper extends Helper {
         if (array_intersect(array('rule', 'allowEmpty', 'on', 'message', 'last'), array_keys($validators))) {
           $validators = array($validators);
         }
-        
+
         foreach($validators as $key => $validator) {
           $rule = null;
 
@@ -88,9 +78,9 @@ class ValidationHelper extends Helper {
                           'message' => __($validator['message'], true)
                          );
 
-						if (isset($validator['last']) && $validator['last'] === true) {
-						    $temp['last'] = true;
-						} 
+            if (isset($validator['last']) && $validator['last'] === true) {
+              $temp['last'] = true;
+            }
 
             if (isset($validator['allowEmpty']) && $validator['allowEmpty'] === true) {
               $temp['allowEmpty'] = true;
@@ -108,10 +98,14 @@ class ValidationHelper extends Helper {
       }
     }
 
-    $js = sprintf('$(function() { $("%s").validate(%s, %s) });',
-                  $options['form'],
-                  $this->Javascript->object($validation),
-                  $this->Javascript->object($pluginOptions));
+    if ($options['form']) {
+      $js = sprintf('$(function() { $("%s").validate(%s, %s) });',
+                    $options['form'],
+                    $this->Javascript->object($validation),
+                    $this->Javascript->object($pluginOptions));
+    } else {
+      return $this->Javascript->object($validation);
+    }
 
     if ($options['inline']) {
       return sprintf($this->Javascript->tags['javascriptblock'], $js);
@@ -139,6 +133,30 @@ class ValidationHelper extends Helper {
       $rule = $rule[0];
     }
 
+    if ($rule == 'comparison') {
+      $params[0] = str_replace(array(' ', "\t", "\n", "\r", "\0", "\x0B"), '', strtolower($params[0]));
+      switch ($params[0]) {
+        case 'isgreater':
+          $params[0] = '>';
+          break;
+        case 'isless':
+          $params[0] = '<';
+          break;
+        case 'greaterorequal':
+          $params[0] = '>=';
+          break;
+        case 'lessorequal':
+          $params[0] = '<=';
+          break;
+        case 'equalto':
+          $params[0] = '==';
+          break;
+        case 'notequal':
+          $params[0] = '!=';
+          break;
+      }
+    }
+
     //Certain Cake built-in validations can be handled with regular expressions,
     //but aren't on the Cake side.
     switch ($rule) {
@@ -146,15 +164,29 @@ class ValidationHelper extends Helper {
         return '/^[0-9A-Za-z]+$/';
       case 'between':
         return sprintf('/^.{%d,%d}$/', $params[0], $params[1]);
+      case 'boolean':
+        return array('rule' => 'boolean');
       case 'date':
         //Some of Cake's date regexs aren't JavaScript compatible. Skip for now
-        return false;
+        if (!empty($params[0])) {
+          $params = $params[0];
+        } else {
+          $params = 'ymd';
+        }
+        return array('rule' => 'date', 'params' => $params);
       case 'email':
         return VALID_EMAIL_JS;
       case 'equalTo':
         return sprintf('/^%s$/', $params[0]);
       case 'extension':
-        return sprintf('/\.(%s)$/', implode('|', explode(',', DEFAULT_VALIDATION_EXTENSIONS)));
+        if (empty($params[0])) {
+          $params = array('gif', 'jpeg', 'png', 'jpg');
+        } else {
+          $params = $params[0];
+        }
+        return sprintf('/\.(%s)$/', implode('|', $params));
+      case 'inList':
+        return array('rule' => 'inList', 'params' => $params[0]);
       case 'ip':
         return VALID_IP_JS;
       case 'minLength':
@@ -163,7 +195,11 @@ class ValidationHelper extends Helper {
         return sprintf('/^.{0,%d}$/', $params[0]);
       case 'money':
         //The Cake regex for money was giving me issues, even within PHP.  Skip for now
-        return false;
+        return array('rule' => 'money');
+      case 'multiple':
+        $defaults = array('in' => null, 'max' => null, 'min' => null);
+        $params = array_merge($defaults, $params[0]);
+        return array('rule' => 'multiple', 'params' => $params);
       case 'numeric':
         //Cake uses PHP's is_numeric function, which actually accepts a varied input
         //(both +0123.45e6 and 0xFF are valid) then what is allowed in this regular expression.
@@ -175,10 +211,6 @@ class ValidationHelper extends Helper {
         //Don't think there is a way to do this with a regular expressions,
         //so we'll handle this with plain old javascript
         return array('rule' => $rule, 'params' => array($params[0], $params[1]));
-      case 'multiple':
-        $defaults = array('in' => null, 'max' => null, 'min' => null);
-        $params = array_merge($defaults, $params[0]);
-        return array('rule' => 'multiple', 'params' => $params);
     }
 
     //try to lookup the regular expression from
@@ -193,7 +225,7 @@ class ValidationHelper extends Helper {
       }
     }
 
-    if($regex) {
+    if ($regex) {
       //special handling
       switch ($rule) {
         case 'postal':
@@ -205,7 +237,7 @@ class ValidationHelper extends Helper {
       }
       return $regex;
     }
-    
+
     return array('rule' => $rule, 'params' => $params);
   }
 }

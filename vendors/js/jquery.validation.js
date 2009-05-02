@@ -42,7 +42,7 @@
               return true;
             }
             
-            if (!$.fn.validate.validateRule(field, val, this['rule'], this['negate'])) {
+            if (!$.fn.validate.validateRule(val, this['rule'], this['negate'])) {
               errors.push(this['message']);
               
               $.fn.validate.setError(field, this['message']);
@@ -65,33 +65,34 @@
     });
   };
   
-  $.fn.validate.validateRule = function(field, val, rule, negate) {
-    //handle custom functions
-    if(typeof rule == 'object' && $.fn.validate[rule.rule] != undefined) {
-      return $.fn.validate[rule.rule](val, rule.params);
+  $.fn.validate.validateRule = function(val, rule, negate) {
+    if(negate == undefined) {
+      negate = false;
     }
-    
+        
+    //handle custom functions
+    if(typeof rule == 'object') {
+      if($.fn.validate[rule.rule] != undefined) {
+        return $.fn.validate[rule.rule](val, rule.params);
+      } else {
+        return true;
+      }
+    }
+
     //handle regex rules
     if (negate && val.match(eval(rule))) {
       return false;
-    } else if (!val.match(eval(rule))) {
-      return false;
-    }
-    
-    return true;
-  };
-
-  $.fn.validate.range = function(val, params) {
-    if (val < parseInt(params[0])) {
-      return false;
-    }
-    if (val > parseInt(params[1])) {
+    } else if (!negate && !val.match(eval(rule))) {
       return false;
     }
     
     return true;
   };
   
+  $.fn.validate.boolean = function(val) {
+    return $.fn.validate.inList(val, [0, 1, '0', '1', true, false]);
+  }
+    
   $.fn.validate.comparison = function(val, params) {
     if(val == "") {
       return false;
@@ -107,6 +108,27 @@
     }
     
     return false;
+  };
+  
+  $.fn.validate.inList = function(val, params) {
+    if(params != null) {
+      if($.inArray(val, params) == -1) {
+        return false;
+      }
+    }
+    
+    return true;
+  }
+  
+  $.fn.validate.range = function(val, params) {
+    if (val < parseInt(params[0])) {
+      return false;
+    }
+    if (val > parseInt(params[1])) {
+      return false;
+    }
+    
+    return true;
   };
   
   $.fn.validate.multiple = function(val, params) {
