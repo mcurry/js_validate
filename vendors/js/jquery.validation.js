@@ -91,7 +91,7 @@
   
   $.fn.validate.boolean = function(val) {
     return $.fn.validate.inList(val, [0, 1, '0', '1', true, false]);
-  }
+  };
     
   $.fn.validate.comparison = function(val, params) {
     if(val == "") {
@@ -118,7 +118,7 @@
     }
     
     return true;
-  }
+  };
   
   $.fn.validate.range = function(val, params) {
     if (val < parseInt(params[0])) {

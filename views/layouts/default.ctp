@@ -33,8 +33,7 @@
 	<?php
 		echo $html->meta('icon');
 
-    echo $javascript->link(array('http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js',
-                                 '/js_validate/js/jquery.validation'));
+    echo $javascript->link(array('http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'));
 		echo $html->css('cake.generic');
 
 		echo $scripts_for_layout;

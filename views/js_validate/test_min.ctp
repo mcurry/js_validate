@@ -1,7 +1,7 @@
 <?php $javascript->codeBlock('var validationRules = ' . $validation->bind('JsValidate', array('form' => false)) . ';',
                              array('inline' => false)); ?>
                              
-<?php echo $javascript->link(array('/js_validate/js/jquery.validation',
+<?php echo $javascript->link(array('/js_validate/js/jquery.validation.min',
                                    'http://jqueryjs.googlecode.com/svn/trunk/qunit/testrunner.js',
                                    '/js_validate/js/unit_tests'),
                              false); ?>
