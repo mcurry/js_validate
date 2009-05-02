@@ -119,5 +119,39 @@ $(function(){
     ok( !$.fn.validate.validateRule("49.5", validationRules.JsValidateNumeric[0].rule), "49.5");
     ok( !$.fn.validate.validateRule("forty nine", validationRules.JsValidateNumeric[0].rule), "forty nine");
   });
+  
+  test("notEmpty", function() {    
+    ok( $.fn.validate.validateRule("whatever", validationRules.JsValidateNotEmpty[0].rule), "whatever");
+    ok( !$.fn.validate.validateRule("", validationRules.JsValidateNotEmpty[0].rule), "<blank>");
+  });
+  
+  test("phone", function() {    
+    ok( $.fn.validate.validateRule("555-555-5555", validationRules.JsValidatePhone[0].rule), "555-555-5555");
+    ok( !$.fn.validate.validateRule("555-5a5-5555", validationRules.JsValidatePhone[0].rule), "555-5a5-5555");
+  });
+  
+  test("postal", function() {    
+    ok( $.fn.validate.validateRule("12345", validationRules.JsValidatePostal[0].rule), "12345");
+    ok( $.fn.validate.validateRule("12345-9876", validationRules.JsValidatePostal[0].rule), "12345-9876");
+    ok( !$.fn.validate.validateRule("1234a-9876", validationRules.JsValidatePostal[0].rule), "1234a-9876");
+  });
+  
+  test("range", function() {    
+    ok( $.fn.validate.validateRule("5", validationRules.JsValidateRange[0].rule), "5");
+    ok( $.fn.validate.validateRule("0", validationRules.JsValidateRange[0].rule), "0");
+    ok( $.fn.validate.validateRule("10", validationRules.JsValidateRange[0].rule), "10");
+    ok( !$.fn.validate.validateRule("-1", validationRules.JsValidateRange[0].rule), "-1");
+    ok( !$.fn.validate.validateRule("12", validationRules.JsValidateRange[0].rule), "12");
+  });
+  
+  test("ssn", function() {    
+    ok( $.fn.validate.validateRule("555-55-5555", validationRules.JsValidateSsn[0].rule), "555-55-5555");
+    ok( !$.fn.validate.validateRule("5a5-55-5555", validationRules.JsValidateSsn[0].rule), "55-5a5-5555");
+  });
+  
+  test("url", function() {    
+    ok( $.fn.validate.validateRule("www.pseudocoder.com", validationRules.JsValidateUrl[0].rule), "www.pseudocoder.com");
+    ok( $.fn.validate.validateRule("http://cakephp.org", validationRules.JsValidateUrl[0].rule), "http://cakephp.org");
+    ok( !$.fn.validate.validateRule("ww.zendcm", validationRules.JsValidateUrl[0].rule), "ww.zendcm");
+  });
 });
-

@@ -64,6 +64,10 @@
         //do some validation here and return either true or false.
       }
 
-Tips
-    * I wrote an article for PHPArch about JavaScript validation(http://c7y.phparch.com/c/entry/1/art,improved_javascript_validation), which raised some concerns that this approach may reveal too much about an application's security. If this is a concern for you, but you still want to use this helper, there is an option to whitelist rules can be applied on the client side. To use to this feature set the list in your bootstrap.php:
-        Configure::write('javascriptValidationWhitelist', array('alphaNumeric', 'minLength'));  
+/* Tests */
+   1. CakePHP unit tests are available through the normal /test.php
+   2. JavaScript unit test can be run by visiting /js_validate/test.
+   
+/* Tips */
+   * I wrote an article for PHPArch about JavaScript validation(http://c7y.phparch.com/c/entry/1/art,improved_javascript_validation), which raised some concerns that this approach may reveal too much about an application's security. If this is a concern for you, but you still want to use this helper, there is an option to whitelist rules can be applied on the client side. To use to this feature set the list in your bootstrap.php:
+     Configure::write('javascriptValidationWhitelist', array('alphaNumeric', 'minLength'));  

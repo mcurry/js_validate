@@ -161,10 +161,45 @@ class JsValidateTestCase extends CakeTestCase {
     $this->assertEqual($expected, $validation);
   }
   
-  function atestNotEmpty() {
+  function testNotEmpty() {
     $this->JsValidate->validate = array('notEmpty' => $this->JsValidate->backupValidate['notEmpty']);
     $validation = $this->Validation->bind('JsValidate.JsValidate', array('form' => false));
-    $expected = '{"JsValidate.JsValidateNotEmpty":[{"rule":"\/[^\\\\s]+\/m","message":"There was a problem with the field notEmpty"}]}';
+    $expected = '{"JsValidate.JsValidateNotEmpty":[{"rule":"\/[^\\\\s]+\/m","message":"There was a problem with the field NotEmpty"}]}';
+    $this->assertEqual($expected, $validation);
+  }
+  
+  function testPhone() {
+    $this->JsValidate->validate = array('phone' => $this->JsValidate->backupValidate['phone']);
+    $validation = $this->Validation->bind('JsValidate.JsValidate', array('form' => false));
+    $expected = '{"JsValidate.JsValidatePhone":[{"rule":"\/^(?:\\\\+?1)?[-. ]?\\\\(?[2-9][0-8][0-9]\\\\)?[-. ]?[2-9][0-9]{2}[-. ]?[0-9]{4}$\/","message":"There was a problem with the field Phone"}]}';
+    $this->assertEqual($expected, $validation);
+  }
+  
+  function testPostal() {
+    $this->JsValidate->validate = array('postal' => $this->JsValidate->backupValidate['postal']);
+    $validation = $this->Validation->bind('JsValidate.JsValidate', array('form' => false));
+    $expected = '{"JsValidate.JsValidatePostal":[{"rule":"\/^[0-9]{5}(?:-[0-9]{4})?$\/i","message":"There was a problem with the field Postal"}]}';
+    $this->assertEqual($expected, $validation);
+  }
+  
+  function testRange() {
+    $this->JsValidate->validate = array('range' => $this->JsValidate->backupValidate['range']);
+    $validation = $this->Validation->bind('JsValidate.JsValidate', array('form' => false));
+    $expected = '{"JsValidate.JsValidateRange":[{"rule":{"rule":"range","params":[0,10]},"message":"There was a problem with the field Range"}]}';
+    $this->assertEqual($expected, $validation);
+  }
+  
+  function testSsn() {
+    $this->JsValidate->validate = array('ssn' => $this->JsValidate->backupValidate['ssn']);
+    $validation = $this->Validation->bind('JsValidate.JsValidate', array('form' => false));
+    $expected = '{"JsValidate.JsValidateSsn":[{"rule":"\/^[0-9]{3}-[0-9]{2}-[0-9]{4}$\/i","message":"There was a problem with the field Ssn"}]}';
+    $this->assertEqual($expected, $validation);
+  }
+  
+  function testUrl() {
+    $this->JsValidate->validate = array('url' => $this->JsValidate->backupValidate['url']);
+    $validation = $this->Validation->bind('JsValidate.JsValidate', array('form' => false));
+    $expected = '{"JsValidate.JsValidateUrl":[{"rule":"\/^(?:(?:https?|ftps?|file|news|gopher):\\\\\/\\\\\/)?(?:(?:(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])\\\\.){3}(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])|(?:[a-z0-9][-a-z0-9]*\\\\.)*(?:[a-z0-9][-a-z0-9]{0,62})\\\\.(?:(?:[a-z]{2}\\\\.)?[a-z]{2,4}|museum|travel))(?::[1-9][0-9]{0,3})?(?:\\\\\/?|\\\\\/([\\\\!\"\\\\$&\'\\\\(\\\\)\\\\*\\\\+,-\\\\.@_\\\\:;\\\\=\\\\\/0-9a-z]|(%[0-9a-f]{2}))*)?(?:\\\\?([\\\\!\"\\\\$&\'\\\\(\\\\)\\\\*\\\\+,-\\\\.@_\\\\:;\\\\=\\\\\/0-9a-z]|(%[0-9a-f]{2}))*)?(?:#([\\\\!\"\\\\$&\'\\\\(\\\\)\\\\*\\\\+,-\\\\.@_\\\\:;\\\\=\\\\\/0-9a-z]|(%[0-9a-f]{2}))*)?$\/i","message":"There was a problem with the field Url"}]}';
     $this->assertEqual($expected, $validation);
   }
 }

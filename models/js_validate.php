@@ -64,6 +64,24 @@ class JsValidate extends JsValidateAppModel {
                     'numeric' => array(
                               'rule1' => array('rule' => 'numeric')
                             ),
+                    'notEmpty' => array(
+                              'rule1' => array('rule' => 'notEmpty')
+                            ),
+                    'phone' => array(
+                              'rule1' => array('rule' => array('phone', null, 'us'))
+                            ),
+                    'postal' => array(
+                              'rule1' => array('rule' => array('postal', null, 'us'))
+                            ),
+                    'range' => array(
+                              'rule1' => array('rule' => array('range', 0, 10))
+                            ),
+                    'ssn' => array(
+                              'rule1' => array('rule' => array('ssn', null, 'us'))
+                            ),
+                    'url' => array(
+                              'rule1' => array('rule' => 'url')
+                            )
                   );
 }
 ?>
