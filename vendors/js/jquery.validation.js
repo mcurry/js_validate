@@ -158,7 +158,7 @@
     //add the form-error class to the input
     $("#" + field).addClass("form-error")
                   .parents("div:first").addClass("error")
-                  .after('<div class="error-message">'  + message +  '</div>');
+                  .append('<div class="error-message">'  + message +  '</div>');
   };
   
   $.fn.validate.beforeFilter = function() {
