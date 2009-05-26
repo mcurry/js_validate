@@ -205,7 +205,7 @@ class ValidationHelper extends Helper {
         //(both +0123.45e6 and 0xFF are valid) then what is allowed in this regular expression.
         //99% of people using this validation probably want to restrict to just numbers in standard
         //decimal notation.  Feel free to alter or delete.
-        return '/^[+-]?[0-9]+$/';
+        return '/^[+-]?[0-9|.]+$/';
       case 'range':
       case 'comparison':
         //Don't think there is a way to do this with a regular expressions,
