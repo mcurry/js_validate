@@ -24,6 +24,7 @@
       
         $.each(rules, function(field) {
           var val = $("#" + field).val();
+          var fieldName = $('#' + field).attr('name');
           if(typeof val == "string") {
             val = $.trim(val);
           }
@@ -42,9 +43,8 @@
               return true;
             }
             
-            if (!$.fn.validate.validateRule(val, this['rule'], this['negate'])) {
+            if (!$.fn.validate.validateRule(val, this['rule'], this['negate'], fieldName)) {
               errors.push(this['message']);
-              
               $.fn.validate.setError(field, this['message']);
               
               if (this['last'] === true) {
@@ -65,7 +65,7 @@
     });
   };
   
-  $.fn.validate.validateRule = function(val, rule, negate) {
+  $.fn.validate.validateRule = function(val, rule, negate, fieldName) {
     if(negate == undefined) {
       negate = false;
     }
@@ -73,7 +73,7 @@
     //handle custom functions
     if(typeof rule == 'object') {
       if($.fn.validate[rule.rule] != undefined) {
-        return $.fn.validate[rule.rule](val, rule.params);
+        return $.fn.validate[rule.rule](val, rule.params, fieldName);
       } else {
         return true;
       }
