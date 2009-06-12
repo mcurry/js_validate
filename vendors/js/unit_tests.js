@@ -116,7 +116,7 @@ $(function(){
     ok( $.fn.validate.validateRule("49", validationRules.JsValidateNumeric[0].rule), "49");
     ok( $.fn.validate.validateRule("+49", validationRules.JsValidateNumeric[0].rule), "+49");
     ok( $.fn.validate.validateRule("-49", validationRules.JsValidateNumeric[0].rule), "-49");
-    ok( !$.fn.validate.validateRule("49.5", validationRules.JsValidateNumeric[0].rule), "49.5");
+    ok( $.fn.validate.validateRule("49.5", validationRules.JsValidateNumeric[0].rule), "49.5");
     ok( !$.fn.validate.validateRule("forty nine", validationRules.JsValidateNumeric[0].rule), "forty nine");
   });
   
