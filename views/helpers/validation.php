@@ -29,9 +29,9 @@ class ValidationHelper extends Helper {
   var $whitelist = false;
 
   function bind($modelNames, $options=array()) {
-    $defaultOptions = array('form' => 'form', 'inline' => true, 'messageId' => null);
+    $defaultOptions = array('form' => 'form', 'inline' => true, 'messageId' => null, 'root' => Router::url('/'), 'watch' => array());
     $options = am($defaultOptions, $options);
-    $pluginOptions = array_intersect_key($options, array('messageId' => true));
+    $pluginOptions = array_intersect_key($options, array('messageId' => true, 'root' => true, 'watch' => true));
 
     //load the whitelist
     $this->whitelist = Configure::read('javascriptValidationWhitelist');
@@ -96,9 +96,15 @@ class ValidationHelper extends Helper {
           }
         }
       }
+			
+			if(!empty($pluginOptions['watch'])) {
+				$pluginOptions['watch'] = $this->__fixWatch($modelName, $pluginOptions['watch']);
+			}			
     }
+		
 
-    if ($options['form']) {
+		
+		if ($options['form']) {
       $js = sprintf('$(function() { $("%s").validate(%s, %s) });',
                     $options['form'],
                     $this->Javascript->object($validation),
@@ -240,5 +246,18 @@ class ValidationHelper extends Helper {
 
     return array('rule' => $rule, 'params' => $params);
   }
+
+	function __fixWatch($modelName, $fields) {
+		foreach($fields as $i => $field) {
+			if (strpos($field, '.') !== false) {
+				list($model, $field) = explode('.', $field);
+				$fields[$i] = ucfirst($model) . ucfirst($field);
+			} else {
+				$fields[$i] = $modelName . ucfirst($field);
+			}
+		}
+		
+		return $fields;
+	}
 }
 ?>

@@ -14,7 +14,13 @@
   var options = null;
   $.fn.validate = function(rules, opts) {
     options = $.extend({}, $.fn.validate.defaults, opts);
-    
+		
+		$.each(opts.watch, function(fieldId) {
+			$("#" + opts.watch[fieldId]).change(function() {
+				$.fn.validate.ajaxField($(this));
+			});
+		});
+
     return this.each(function() {
       $this = $(this);
       $this.submit(function() {
@@ -153,21 +159,54 @@
     
     return true;
   };
+	
+	$.fn.validate.ajaxField = function($field) {
+		$.fn.validate.clearError($field);
+		$.fn.validate.ajaxBeforeFilter($field);
+
+		var data = new Object;
+		data[$field.attr("name")] = $field.val();
+		$.post(options.root + "js_validate/field/" + $field.attr("id"), data,
+			function(validates) {
+				$.fn.validate.ajaxAfterFilter($("#" + validates.field));
+				if(!validates.result) {
+					$.fn.validate.setError(validates.field, validates.message);
+				}
+			},
+			"json");
+	}
+	
+	$.fn.validate.ajaxBeforeFilter = function($field) {
+		$field.after("<img class=\"ajax-loader\" src=\"" + options.root + "js_validate/img/ajax-loader.gif\">");
+	}
+
+	$.fn.validate.ajaxAfterFilter = function($field) {
+		$field.siblings(".ajax-loader").remove();
+	}
+	
+	$.fn.validate.clearError = function($field) {
+		if(typeof $field == "string") {
+			$field = $("#" + field);
+		}
+		
+		$field.removeClass("form-error")
+					.parents("div:first").removeClass("error")
+					.children(".error-message").remove();		
+	}
   
   $.fn.validate.setError = function(field, message) {
-    //add the form-error class to the input
     $("#" + field).addClass("form-error")
                   .parents("div:first").addClass("error")
                   .append('<div class="error-message">'  + message +  '</div>');
   };
-  
+	
   $.fn.validate.beforeFilter = function() {
     if(options.messageId != null) {
       $("#" + options.messageId).html("")
                                 .slideDown();
     }
     
-    $(".error-message").hide();
+    $(".error-message").remove();
     $("input").removeClass("form-error");
     $("div").removeClass("error")
   };  
