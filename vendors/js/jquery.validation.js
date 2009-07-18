@@ -149,9 +149,9 @@
       return false;
     }
     
-    if(params.in != null) {
-      for(i = 0; i < params.in.length; i ++) {
-        if($.inArray(params.in[i], val) == -1) {
+    if(params["in"] != null) {
+      for(i = 0; i < params["in"].length; i ++) {
+        if($.inArray(params["in"][i], val) == -1) {
           return false;
         }
       }
