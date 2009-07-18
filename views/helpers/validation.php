@@ -29,7 +29,7 @@ class ValidationHelper extends Helper {
   var $whitelist = false;
 
   function bind($modelNames, $options=array()) {
-    $defaultOptions = array('form' => 'form', 'inline' => true, 'messageId' => null, 'root' => Router::url('/'), 'watch' => array());
+    $defaultOptions = array('form' => 'form', 'inline' => true, 'root' => Router::url('/'), 'watch' => array());
     $options = am($defaultOptions, $options);
     $pluginOptions = array_intersect_key($options, array('messageId' => true, 'root' => true, 'watch' => true));
 
@@ -63,10 +63,15 @@ class ValidationHelper extends Helper {
           }
 
           if (!isset($validator['message'])) {
-            $validator['message'] = sprintf('%s %s',
-                                            __('There was a problem with the field', true),
-                                            Inflector::humanize($field)
-                                           );
+						$message = sprintf(__($key, true), __($field, true));
+						if($key != $message) {
+							$validator['message'] = $message;
+						} else {
+							$validator['message'] = sprintf('%s %s',
+																							__('There was a problem with the field', true),
+																							Inflector::humanize($field)
+																						 );
+						}
           }
 
           if (!empty($validator['rule'])) {
