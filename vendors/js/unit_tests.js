@@ -1,5 +1,5 @@
 $(function(){
-  test("alphaNumeric", function() {    
+  test("alphaNumeric", function() {
     ok( $.fn.validate.validateRule("Ab1", validationRules.JsValidateAlphaNumeric[0].rule), "Ab1");
     ok( !$.fn.validate.validateRule("Ab 1", validationRules.JsValidateAlphaNumeric[0].rule), "Ab 1");
     ok( !$.fn.validate.validateRule("Ab1 ", validationRules.JsValidateAlphaNumeric[0].rule), "Ab1 ");
