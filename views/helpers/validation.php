@@ -201,9 +201,9 @@ class ValidationHelper extends Helper {
       case 'ip':
         return VALID_IP_JS;
       case 'minLength':
-        return sprintf('/^.{%d,}$/', $params[0]);
+        return sprintf('/^[\s\S]{%d,}$/', $params[0]);
       case 'maxLength':
-        return sprintf('/^.{0,%d}$/', $params[0]);
+        return sprintf('/^[\s\S]{0,%d}$/', $params[0]);
       case 'money':
         //The Cake regex for money was giving me issues, even within PHP.  Skip for now
         return array('rule' => 'money');

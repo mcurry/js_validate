@@ -92,13 +92,18 @@ $(function(){
   test("minLength", function() {    
     ok( $.fn.validate.validateRule("aaaaa", validationRules.JsValidateMinLength[0].rule), "aaaaa");
     ok( $.fn.validate.validateRule("aaaaaa", validationRules.JsValidateMinLength[0].rule), "aaaaaa");
+		ok( $.fn.validate.validateRule("aaa\naaa", validationRules.JsValidateMinLength[0].rule), "aaa\naaa");
     ok( !$.fn.validate.validateRule("aaaa", validationRules.JsValidateMinLength[0].rule), "aaaa");
+		ok( !$.fn.validate.validateRule("aaa\n", validationRules.JsValidateMinLength[0].rule), "aaa\n");
+		ok( !$.fn.validate.validateRule("a\naa", validationRules.JsValidateMinLength[0].rule), "a\naa");
   });
   
   test("maxLength", function() {    
     ok( $.fn.validate.validateRule("aaaaa", validationRules.JsValidateMaxLength[0].rule), "aaaaa");
     ok( $.fn.validate.validateRule("aaaaaaa", validationRules.JsValidateMaxLength[0].rule), "aaaaaaa");
+		ok( $.fn.validate.validateRule("aaa\naaa", validationRules.JsValidateMaxLength[0].rule), "aaa\naaa");
     ok( !$.fn.validate.validateRule("aaaaaaaaaaaa", validationRules.JsValidateMaxLength[0].rule), "aaaaaaaaaaaa");
+		ok( !$.fn.validate.validateRule("aaaaaa\naaaaaa", validationRules.JsValidateMaxLength[0].rule), "aaaaaa\naaaaaa");
   });
   
   test("money", function() {    
