@@ -157,7 +157,7 @@ class JsValidateTestCase extends CakeTestCase {
   function testNumeric() {
     $this->JsValidate->validate = array('numeric' => $this->JsValidate->backupValidate['numeric']);
     $validation = $this->Validation->bind('JsValidate.JsValidate', array('form' => false));
-    $expected = '{"JsValidate.JsValidateNumeric":[{"rule":"\/^[+-]?[0-9]+$\/","message":"There was a problem with the field Numeric"}]}';
+    $expected = '{"JsValidate.JsValidateNumeric":[{"rule":"\/^[+-]?[0-9|.]+$\/","message":"There was a problem with the field Numeric"}]}';
     $this->assertEqual($expected, $validation);
   }
   
