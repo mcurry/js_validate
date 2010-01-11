@@ -129,14 +129,14 @@ class JsValidateTestCase extends CakeTestCase {
   function testMinLength() {
     $this->JsValidate->validate = array('minLength' => $this->JsValidate->backupValidate['minLength']);
     $validation = $this->Validation->bind('JsValidate.JsValidate', array('form' => false));
-    $expected = '{"JsValidate.JsValidateMinLength":[{"rule":"\/^.{5,}$\/","message":"There was a problem with the field MinLength"}]}';
+    $expected = '{"JsValidate.JsValidateMinLength":[{"rule":"\/^[\\\\s\\\\S]{5,}$\/","message":"There was a problem with the field MinLength"}]}';
     $this->assertEqual($expected, $validation);
   }
   
   function testMaxLength() {
     $this->JsValidate->validate = array('maxLength' => $this->JsValidate->backupValidate['maxLength']);
     $validation = $this->Validation->bind('JsValidate.JsValidate', array('form' => false));
-    $expected = '{"JsValidate.JsValidateMaxLength":[{"rule":"\/^.{0,7}$\/","message":"There was a problem with the field MaxLength"}]}';
+    $expected = '{"JsValidate.JsValidateMaxLength":[{"rule":"\/^[\\\\s\\\\S]{0,7}$\/","message":"There was a problem with the field MaxLength"}]}';
     $this->assertEqual($expected, $validation);
   }
 
