@@ -12,7 +12,7 @@
  
 /* Notes */
     * This helper requires jQuery. Sorry to all you Prototype/script.aculo.us users.
-    * Tested on CakePHP 1.2.2.8120 Stable and jQuery 1.3.2
+    * Tested on CakePHP 1.2.5 Stable and jQuery 1.3.2
 
 /* ReadMe */
    1. Download the plugin and put it in /app/plugin/js_validate
@@ -63,6 +63,22 @@
       $.fn.validate.myRule= function(val, params) {
         //do some validation here and return either true or false.
       }
+
+/* Manual Form Handling */
+You can disable the auto binding to the form by adding setting the catch option to false:
+	echo $validation->bind('Model', array('catch' => false));
+
+Then catch the submit and run the validation manually:
+	$("#ModelForm").submit(function(event) {
+	  //your own code here
+	
+	  //run the validation
+	  valid = $.fn.validate($(this).data("validation"));
+	  
+	  //more code
+	
+	  return valid;
+	}
 
 /* Tests */
    1. CakePHP unit tests are available through the normal /test.php

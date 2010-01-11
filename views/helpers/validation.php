@@ -29,7 +29,7 @@ class ValidationHelper extends Helper {
   var $whitelist = false;
 
   function bind($modelNames, $options=array()) {
-    $defaultOptions = array('form' => 'form', 'inline' => true, 'root' => Router::url('/'), 'watch' => array());
+    $defaultOptions = array('form' => 'form', 'inline' => true, 'root' => Router::url('/'), 'watch' => array(), 'catch' => true);
     $options = am($defaultOptions, $options);
     $pluginOptions = array_intersect_key($options, array('messageId' => true, 'root' => true, 'watch' => true));
 
@@ -107,13 +107,17 @@ class ValidationHelper extends Helper {
 			}			
     }
 		
-
-		
 		if ($options['form']) {
-      $js = sprintf('$(function() { $("%s").validate(%s, %s) });',
-                    $options['form'],
-                    $this->Javascript->object($validation),
-                    $this->Javascript->object($pluginOptions));
+			if($options['catch']) {
+				$js = sprintf('$(function() { $("%s").validate(%s, %s) });',
+											$options['form'],
+											$this->Javascript->object($validation),
+											$this->Javascript->object($pluginOptions));
+			} else {
+				$js = sprintf('$(function() { $("%s").data("validation", %s) });',
+											$options['form'],
+											$this->Javascript->object($validation));	
+			}
     } else {
       return $this->Javascript->object($validation);
     }
