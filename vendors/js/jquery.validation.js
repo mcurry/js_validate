@@ -25,12 +25,23 @@
       $this = $(this);
       $this.submit(function() {
         var errors = [];
-        
+        var val = null;
+				
         $.fn.validate.beforeFilter();
       
         $.each(rules, function(field) {
-          var val = $("#" + field).val();
-          var fieldName = $('#' + field).attr('name');
+					$field = $("#" + field);
+					if($field.attr("type") == "checkbox") {
+						if($field.filter(":checked").length > 0) {
+							val = $field.filter(":checked").val();
+						} else {
+							val = "0";
+						}
+					} else {
+						val = $field.val();
+					}
+          
+          var fieldName = $field.attr('name');
           if(typeof val == "string") {
             val = $.trim(val);
           }
@@ -126,17 +137,6 @@
     return true;
   };
   
-  $.fn.validate.range = function(val, params) {
-    if (val < parseInt(params[0])) {
-      return false;
-    }
-    if (val > parseInt(params[1])) {
-      return false;
-    }
-    
-    return true;
-  };
-  
   $.fn.validate.multiple = function(val, params) {
     if(typeof val != "object" || val == null) {
       return false;
@@ -155,6 +155,29 @@
           return false;
         }
       }
+    }
+    
+    return true;
+  };
+	
+	$.fn.validate.notEmpty = function(val, params) {
+		if(typeof val == "string" && val == "") {
+			return false;
+		}
+		
+		if(typeof val == "object" && val.length == 0) {
+			return false;
+		}
+		
+		return true;
+	}
+
+  $.fn.validate.range = function(val, params) {
+    if (val < parseInt(params[0])) {
+      return false;
+    }
+    if (val > parseInt(params[1])) {
+      return false;
     }
     
     return true;

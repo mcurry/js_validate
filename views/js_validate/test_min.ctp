@@ -7,10 +7,7 @@
                              false); ?>
 <?php echo $html->css(array('http://github.com/jquery/qunit/raw/master/qunit/qunit.css'), null, null, false); ?>
 
-<h1>CakePHP jQuery Validation Unit Tests</h1>
-<h2 id="banner"></h2>
-<h2 id="userAgent"></h2>
-
-<ol id="tests"></ol>
-
-<div id="main"></div>
+<h1 id="qunit-header">CakePHP jQuery Validation Unit Tests</h1>
+<h2 id="qunit-banner"></h2>
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>

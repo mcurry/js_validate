@@ -215,6 +215,8 @@ class ValidationHelper extends Helper {
         $defaults = array('in' => null, 'max' => null, 'min' => null);
         $params = array_merge($defaults, $params[0]);
         return array('rule' => 'multiple', 'params' => $params);
+	    case 'notEmpty':
+        return array('rule' => 'notEmpty');
       case 'numeric':
         //Cake uses PHP's is_numeric function, which actually accepts a varied input
         //(both +0123.45e6 and 0xFF are valid) then what is allowed in this regular expression.

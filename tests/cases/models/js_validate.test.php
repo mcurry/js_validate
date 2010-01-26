@@ -164,7 +164,7 @@ class JsValidateTestCase extends CakeTestCase {
   function testNotEmpty() {
     $this->JsValidate->validate = array('notEmpty' => $this->JsValidate->backupValidate['notEmpty']);
     $validation = $this->Validation->bind('JsValidate.JsValidate', array('form' => false));
-    $expected = '{"JsValidate.JsValidateNotEmpty":[{"rule":"\/[^\\\\s]+\/m","message":"There was a problem with the field NotEmpty"}]}';
+    $expected = '{"JsValidate.JsValidateNotEmpty":[{"rule":{"rule":"notEmpty"},"message":"There was a problem with the field NotEmpty"}]}';
     $this->assertEqual($expected, $validation);
   }
   
