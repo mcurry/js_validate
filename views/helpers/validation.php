@@ -138,14 +138,14 @@ class ValidationHelper extends Helper {
       return false;
     }
 
-    if (is_array($this->whitelist) && !in_array($rule, $this->whitelist)) {
-      return false;
-    }
-
     $params = array();
     if (is_array($rule)) {
       $params = array_slice($rule, 1);
       $rule = $rule[0];
+    }
+		
+    if (is_array($this->whitelist) && !in_array($rule, $this->whitelist)) {
+      return false;
     }
 
     if ($rule == 'comparison') {
