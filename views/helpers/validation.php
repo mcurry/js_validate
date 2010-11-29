@@ -256,9 +256,9 @@ class ValidationHelper extends Helper {
       }
       return $regex;
     }
-
-    return array('rule' => $rule, 'params' => $params);
-  }
+    // If not rule is selected handle with a regular expression
+    return($rule);
+}
 
 	function __fixWatch($modelName, $fields) {
 		foreach($fields as $i => $field) {
