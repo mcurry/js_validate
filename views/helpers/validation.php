@@ -44,6 +44,8 @@ class ValidationHelper extends Helper {
     //filter the rules to those that can be handled with JavaScript
     foreach($modelNames as $modelName) {
       $model = classRegistry::init($modelName);
+      $arr=explode('.',$modelName);
+      $realModelName=$arr[0];
 
       foreach ($model->validate as $field => $validators) {
         if (array_intersect(array('rule', 'allowEmpty', 'on', 'message', 'last'), array_keys($validators))) {
@@ -97,7 +99,7 @@ class ValidationHelper extends Helper {
               $temp['negate'] = true;
             }
 
-            $validation[$modelName . Inflector::camelize($field)][] = $temp;
+            $validation[$realModelName . Inflector::camelize($field)][] = $temp;
           }
         }
       }
@@ -254,9 +256,9 @@ class ValidationHelper extends Helper {
       }
       return $regex;
     }
-
-    return array('rule' => $rule, 'params' => $params);
-  }
+    // If not rule is selected handle with a regular expression
+    return($rule);
+}
 
 	function __fixWatch($modelName, $fields) {
 		foreach($fields as $i => $field) {
