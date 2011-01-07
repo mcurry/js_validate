@@ -12,11 +12,11 @@
 
 (function($) {
 	$.fn.validate = function(rules, opts) {
-		options = $.extend({}, opts);
+		options = $.extend({watch: []}, opts);
 
-		$.each(opts.watch,
+		$.each(options.watch,
 		function(fieldId) {
-			$("#" + opts.watch[fieldId]).change(function() {
+			$("#" + options.watch[fieldId]).change(function() {
 				$.fn.validate.ajaxField($(this));
 			});
 		});
@@ -29,7 +29,7 @@
 		});
 	};
 	
-	$.fn.validate.check = function(form, rules) {
+	$.fn.validate.check = function(rules) {
 		var errors = [];
 		var val = null;
 
