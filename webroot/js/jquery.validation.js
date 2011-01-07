@@ -82,7 +82,6 @@
 		$.fn.validate.afterFilter(errors);
 
 		if (errors.length > 0) {
-			console.log("false");
 			return false;
 		}
 
