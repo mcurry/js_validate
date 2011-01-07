@@ -12,7 +12,7 @@
 
 (function($) {
 	$.fn.validate = function(rules, opts) {
-		options = $.extend({}, $.validate.defaults, opts);
+		options = $.extend({}, opts);
 
 		$.each(opts.watch,
 		function(fieldId) {
@@ -240,9 +240,5 @@
 		if (options.messageId != null) {
 			$("#" + options.messageId).html(errors.join("<br />")).slideDown();
 		}
-	};
-	
-	$.validate.defaults = {
-		watch: []
 	};
 })(jQuery);
