@@ -1,6 +1,6 @@
 /*
  * CakePHP jQuery Validation Plugin
- * Copyright (c) 2009 Matt Curry
+ * Copyright (c) 2011 Matt Curry
  * www.PseudoCoder.com
  * http://github.com/mcurry/js_validate/
  * http://sandbox2.pseudocoder.com/demo/validation
@@ -73,12 +73,12 @@ Then catch the submit and run the validation manually:
 	  //your own code here
 	
 	  //run the validation
-	  valid = $.fn.validate($(this).data("validation"));
+	  valid = $.fn.validate.check($(this).data("validation"));
 	  
 	  //more code
 	
 	  return valid;
-	}
+	});
 
 /* Tests */
    1. CakePHP unit tests are available through the normal /test.php

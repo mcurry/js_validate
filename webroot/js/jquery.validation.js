@@ -240,4 +240,6 @@
 			$("#" + options.messageId).html(errors.join("<br />")).slideDown();
 		}
 	};
+	
+	var options = [];
 })(jQuery);
